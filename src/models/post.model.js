@@ -1,16 +1,15 @@
-const { required } = require("joi");
 const mongoose = require("mongoose");
 
 const postSchema = new mongoose.Schema(
   {
     title: {
-      type: string,
+      type: String,
       required: true,
       maxLength: 100,
       trim: true,
     },
     content: {
-      type: string,
+      type: String,
       required: true,
       maxLength: 1000,
     },
