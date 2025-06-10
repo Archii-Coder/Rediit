@@ -1,0 +1,58 @@
+1. check the similar product like reddit and see how the app works
+
+ERD Entity relational diagram (for complicated project):
+- to show tables relationship in between
+
+User: {
+    username
+    password
+    likes: [postId]
+}
+
+Post: {
+    title,
+    content,
+    likes, (number)
+    comments, (number)
+    hashtags, ([ObjectId]) -> limit the number to display, can save ObjectId because the number is limited
+    user,
+    createdAt,
+    updatedAt,
+    isDeleted,
+    deletedAt,
+}
+
+Comment: {
+    user,
+    content,
+    post,
+    likes,
+    createdAt,
+    updatedAt,
+
+    (thread,
+    replies,
+    parentComment,
+    depth,)
+}
+
+Hashtag: {
+    name,
+    (description,)
+    createdAt,
+    postsCount (number),
+    recentPosts[]
+}
+
+* likes -> for easy to manage, so we create an individual table
+if likes reach thousands level, the performance will drop dramatically
+
+likes: {
+    user,
+    targetType (post, comment),
+    targetId,
+    post, -> what comments I liked in this open post
+    createdAt
+}
+
+indexing
