@@ -45,3 +45,33 @@ const getPostById = async (req, res, next) => {
     next(event);
   }
 };
+
+const updatePostById = async (req, res, next) => {
+  try {
+    const post = await PostModel.findById(req.params.id).exec();
+    if (!post) {
+      throw new NotFoundException(`Post not found ${req.params.id}`);
+    }
+    post.set(req.body);
+    await post.save();
+    res.json({
+      success: true,
+      data: post,
+    });
+  } catch (event) {
+    next(event);
+  }
+};
+
+const deletePostById = async (req, res, next) => {
+  try {
+    const post = await PostModel.findById(req.params.id).exec();
+    if (!post) {
+      throw new NotFoundException(`Post not found ${req.params.id}`);
+    }
+    await post.deleteOne();
+    res.sendStatus(204);
+  } catch (event) {
+    next(event);
+  }
+};
