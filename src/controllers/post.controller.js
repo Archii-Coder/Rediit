@@ -75,3 +75,11 @@ const deletePostById = async (req, res, next) => {
     next(event);
   }
 };
+
+module.exports = {
+  createPost,
+  getAllPosts,
+  getPostById,
+  updatePostById,
+  deletePostById,
+};

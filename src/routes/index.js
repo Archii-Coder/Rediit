@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const authRouter = require("./auth.route");
+const postRouter = require("./post.route");
 const {
   publicPath,
   privatePath,
@@ -11,6 +12,7 @@ const roleGuardMiddleware = require("../middleware/roleGuard.middleware");
 const v1Router = Router();
 
 v1Router.use("/auth", authRouter);
+v1Router.use("/posts", authGuardMiddleware, postRouter);
 
 v1Router.get("/public", publicPath);
 v1Router.get("/private", authGuardMiddleware, privatePath);
