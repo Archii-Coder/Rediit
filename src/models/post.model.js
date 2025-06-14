@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const NotFoundException = require("../exceptions/notFound.exception");
 
 const postSchema = new mongoose.Schema(
   {
@@ -23,5 +24,18 @@ const postSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+postSchema.statics.findByIdOrFail = async function (id) {
+  const post = await this.findById(id).exec();
+  if (!post) {
+    throw new NotFoundException(`Post not found: ${id}`);
+  }
+  return post;
+};
+
+postSchema.index({
+  title: "text",
+  content: "text",
+});
 
 module.exports = mongoose.model("Post", postSchema);

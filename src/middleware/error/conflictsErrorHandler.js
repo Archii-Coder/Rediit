@@ -1,9 +1,9 @@
-const NotFoundException = require('../../exceptions/notFound.exception');
+const ConflictsException = require('../../exceptions/conflict.exception');
 const { logger } = require('../../utils/logger');
 
 module.exports = (error, req, res, next) => {
-  if (error instanceof NotFoundException) {
-    logger.info('Resource not found', {
+  if (error instanceof ConflictsException) {
+    logger.info('Resource conflict', {
       payload: {
         method: req.method,
         path: req.path,

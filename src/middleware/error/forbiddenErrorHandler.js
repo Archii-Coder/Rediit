@@ -1,9 +1,9 @@
-const NotFoundException = require('../../exceptions/notFound.exception');
+const ForbiddenException = require('../../exceptions/forbidden.exception');
 const { logger } = require('../../utils/logger');
 
 module.exports = (error, req, res, next) => {
-  if (error instanceof NotFoundException) {
-    logger.info('Resource not found', {
+  if (error instanceof ForbiddenException) {
+    logger.info('Unauthorized access', {
       payload: {
         method: req.method,
         path: req.path,

@@ -1,4 +1,5 @@
 const PostModel = require("../models/post.model");
+const NotFoundException = require("../exceptions/notFound.exception");
 
 const createPost = async (req, res, next) => {
   try {
@@ -35,7 +36,9 @@ const getAllPosts = async (req, res, next) => {
 
 const getPostById = async (req, res, next) => {
   try {
-    const post = await PostModel.findById(req.params.id).exec();
+    const post = await PostModel.findById(req.params.id)
+      .populate("user", "username")
+      .exec();
 
     if (!post) {
       throw new NotFoundException(`Not found post ${req.params.id}`);
@@ -48,10 +51,7 @@ const getPostById = async (req, res, next) => {
 
 const updatePostById = async (req, res, next) => {
   try {
-    const post = await PostModel.findById(req.params.id).exec();
-    if (!post) {
-      throw new NotFoundException(`Post not found ${req.params.id}`);
-    }
+    const post = await PostModel.findByIdOrFail(req.params.id);
     post.set(req.body);
     await post.save();
     res.json({
@@ -65,10 +65,7 @@ const updatePostById = async (req, res, next) => {
 
 const deletePostById = async (req, res, next) => {
   try {
-    const post = await PostModel.findById(req.params.id).exec();
-    if (!post) {
-      throw new NotFoundException(`Post not found ${req.params.id}`);
-    }
+    const post = await PostModel.findByIdOrFail(req.params.id);
     await post.deleteOne();
     res.sendStatus(204);
   } catch (event) {
